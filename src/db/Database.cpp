@@ -47,5 +47,15 @@ void Database::exec(const std::string& sql) {
     }
 }
 
+Statement Database::prepare(const std::string& sql) {
+    // Statement borrows conn_ and owns only the sqlite3_stmt, so it must not
+    // outlive this Database. Returned as a prvalue - no copy, no move.
+    return Statement(conn_, sql);
+}
+
+std::int64_t Database::lastInsertRowId() const {
+    return sqlite3_last_insert_rowid(conn_);
+}
+
 }
 
