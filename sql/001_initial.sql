@@ -44,6 +44,19 @@ CREATE INDEX IF NOT EXISTS idx_courses_term_active
     ON courses(term_id, is_archived);
 
 ----------------------------------------------------------------------------
+-- Terms
+----------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS terms (
+    id                  INTEGER PRIMARY KEY AUTOINCREMENT,
+    label               TEXT NOT NULL UNIQUE,
+    start_year          INTEGER NOT NULL,
+    start_week          INTEGER NOT NULL,
+    end_year            INTEGER NOT NULL,
+    end_week            INTEGER NOT NULL,
+    is_active           INTEGER NOT NULL DEFAULT 0 CHECK (is_active IN (0, 1))
+);
+
+----------------------------------------------------------------------------
 -- Entries: append-only observation log
 ----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS entries (

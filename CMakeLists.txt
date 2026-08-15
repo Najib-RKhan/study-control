@@ -65,5 +65,9 @@ if(TEST_SOURCES)
   add_executable(studyctl_tests ${TEST_SOURCES})
   target_include_directories(studyctl_tests PRIVATE third_party/doctest)
   target_link_libraries(studyctl_tests PRIVATE studyctl_core)
+  # Lets the migrator test run against the real sql/ tree regardless of the
+  # working directory ctest happens to use.
+  target_compile_definitions(studyctl_tests PRIVATE
+      STUDYCTL_SQL_DIR="${CMAKE_SOURCE_DIR}/sql")
   add_test(NAME unit COMMAND studyctl_tests)
 endif()
