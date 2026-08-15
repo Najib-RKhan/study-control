@@ -51,6 +51,18 @@ Statement& Statement::bind(int i, std::nullptr_t) {
     return *this;
 }
 
+Statement& Statement::bind(int i, int v) {
+    const int rc = sqlite3_bind_int(stmt_, i, v);
+    if (rc != SQLITE_OK) throw SqliteError(rc, "bind int");
+    return *this;
+}
+
+Statement& Statement::bind(int i, std::int64_t v){
+    const int rc = sqlite3_bind_int64(stmt_, i, v);
+    if (rc != SQLITE_OK) throw SqliteError(rc, "bind int64");
+    return *this;
+}
+
 bool Statement::step() {
     const int rc = sqlite3_step(stmt_);
     if (rc == SQLITE_ROW)  return true;
