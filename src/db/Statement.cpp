@@ -45,6 +45,18 @@ Statement& Statement::bind(int i, const std::optional<double>& v) {
     return v.has_value() ? bind(i, *v) : bind(i, nullptr);
 }
 
+Statement& Statement::bindOptDouble(int i, const std::optional<double>& v) {
+    return v ? bind(i, *v) : bind(i, nullptr);
+}
+
+Statement& Statement::bindOptInt64(int i, const std::optional<std::int64_t>& v) {
+    return v ? bind(i, *v) : bind(i, nullptr);
+}
+
+Statement& Statement::bindOptText(int i, const std::optional<std::string>& v) {
+    return v ? bind(i, *v) : bind(i, nullptr);
+}
+
 Statement& Statement::bind(int i, std::nullptr_t) {
     const int rc = sqlite3_bind_null(stmt_, i);
     if (rc != SQLITE_OK) throw SqliteError(rc, "bind null");
@@ -86,6 +98,16 @@ bool Statement::isNull(int i) const {
 std::optional<double> Statement::columnOptDouble(int i) const {
     if (isNull(i)) return std::nullopt;
     return sqlite3_column_double(stmt_, i);
+}
+
+std::optional<std::int64_t> Statement::columnOptInt64(int i) const {
+    if (isNull(i)) return std::nullopt;
+    return columnInt64(i);
+}
+
+std::optional<std::string> Statement::columnOptText(int i) const {
+    if (isNull(i)) return std::nullopt;
+    return columnText(i);
 }
 
 double       Statement::columnDouble(int i) const { return sqlite3_column_double(stmt_, i); }

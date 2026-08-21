@@ -57,5 +57,9 @@ std::int64_t Database::lastInsertRowId() const {
     return sqlite3_last_insert_rowid(conn_);
 }
 
+int Database::changes() const noexcept {
+    return sqlite3_changes(conn_);
+}
+
 }
 

@@ -23,17 +23,25 @@ public:
     Statement& bind(int i, std::nullptr_t);
     Statement& bind(int i, const std:: optional<double>& v);
 
+    // Named rather than overloads of bind(): adding optional<std::string> to
+    // the bind() overload set would make bind(i, "literal") ambiguous.
+    Statement& bindOptDouble(int i, const std::optional<double>& v);
+    Statement& bindOptInt64(int i, const std::optional<std::int64_t>& v);
+    Statement& bindOptText(int i, const std::optional<std::string>& v);
+
     /// returns true while rows remain. throws on error
     bool step();
     void reset();
 
     // 0-based indices, matching C API
-    int                     columnInt(int i) const;
-    std::int64_t            columnInt64(int i) const;
-    double                  columnDouble(int i) const;
-    std::string             columnText(int i) const;
-    bool                    isNull(int i) const;
-    std::optional<double>   columnOptDouble(int i) const;
+    int                          columnInt(int i) const;
+    std::int64_t                 columnInt64(int i) const;
+    double                       columnDouble(int i) const;
+    std::string                  columnText(int i) const;
+    bool                         isNull(int i) const;
+    std::optional<double>        columnOptDouble(int i) const;
+    std::optional<std::int64_t>  columnOptInt64(int i) const;
+    std::optional<std::string>   columnOptText(int i) const;
 
     /// convenience for INSERT/UPDATE/DELETE: steps once, expects SQLITE_DONE
     void execute();
